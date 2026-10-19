@@ -1,0 +1,10 @@
+frozenplain-connect:
+    forum:
+        button: Continue with FrozenPlain
+        hint: For customers · no password needed
+        or: or
+    admin:
+        site_url_label: frozenplain.com address
+        site_url_help: Where the "Continue with FrozenPlain" button and the log-out link go.
+        public_key_label: Sign-in public key
+        public_key_help: The RS256 public key (PEM) matching frozenplain.com's FORUM_SSO_PRIVATE_KEY. Leave empty to turn sign-in with FrozenPlain off.

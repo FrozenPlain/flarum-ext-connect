@@ -1,0 +1,42 @@
+// "Social login first": full-width button, who it's for, then an "or" divider above the password form
+
+// Flarum sizes this list for small icon buttons; match the form's full width instead
+.LogInButtons {
+    width: auto;
+}
+
+.FrozenPlainConnect {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.FrozenPlainConnect-button {
+    // Same weight as the form's main button below
+    padding: 13px 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.FrozenPlainConnect-hint {
+    margin: 8px 0 0;
+    color: @muted-color;
+    font-size: 13px;
+}
+
+.FrozenPlainConnect-or {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    color: @muted-color;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        border-top: 1px solid fade(@muted-color, 35%);
+    }
+}

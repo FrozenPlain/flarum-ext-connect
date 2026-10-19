@@ -1,0 +1,29 @@
+{
+    "name": "frozenplain/flarum-ext-connect",
+    "description": "Optional sign-in to the FrozenPlain forum with a frozenplain.com account.",
+    "keywords": [
+        "flarum"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.8",
+        "firebase/php-jwt": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FrozenPlain\\Connect\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "FrozenPlain Connect",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-snowflake",
+                "backgroundColor": "#27272a",
+                "color": "#d4d4d8"
+            }
+        }
+    }
+}
