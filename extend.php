@@ -2,11 +2,18 @@
 
 use Flarum\Api\Serializer\ForumSerializer;
 use Flarum\Api\Serializer\UserSerializer;
+use Flarum\Discussion\Discussion;
 use Flarum\Extend;
+use Flarum\Http\Middleware\AuthenticateWithHeader;
 use Flarum\Http\Middleware\AuthenticateWithSession;
+use Flarum\Tags\Tag;
 use Flarum\User\Event\Saving;
+use FrozenPlain\Connect\Access\AccessServiceProvider;
+use FrozenPlain\Connect\Access\ReviewDiscussionPolicy;
+use FrozenPlain\Connect\Access\ReviewsTagPolicy;
 use FrozenPlain\Connect\Listener\SaveConnected;
 use FrozenPlain\Connect\Middleware\AuthenticateWithFrozenPlain;
+use FrozenPlain\Connect\Middleware\MarkApiKeyRequest;
 
 return [
     (new Extend\Frontend('forum'))
@@ -44,5 +51,13 @@ return [
     (new Extend\Middleware('admin'))
         ->insertAfter(AuthenticateWithSession::class, AuthenticateWithFrozenPlain::class),
     (new Extend\Middleware('api'))
-        ->insertAfter(AuthenticateWithSession::class, AuthenticateWithFrozenPlain::class),
+        ->insertAfter(AuthenticateWithSession::class, AuthenticateWithFrozenPlain::class)
+        ->insertAfter(AuthenticateWithHeader::class, MarkApiKeyRequest::class),
+
+    // Reviews are only posted through frozenplain.com, which checks the customer owns the product
+    (new Extend\ServiceProvider())
+        ->register(AccessServiceProvider::class),
+    (new Extend\Policy())
+        ->modelPolicy(Tag::class, ReviewsTagPolicy::class)
+        ->modelPolicy(Discussion::class, ReviewDiscussionPolicy::class),
 ];
