@@ -19,7 +19,7 @@
 
 .FrozenPlainConnect-hint {
     margin: 8px 0 0;
-    color: @muted-color;
+    color: var(--muted-color);
     font-size: 13px;
 }
 
@@ -28,7 +28,7 @@
     align-items: center;
     gap: 12px;
     margin-top: 20px;
-    color: @muted-color;
+    color: var(--muted-color);
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -37,6 +37,7 @@
     &::after {
         content: '';
         flex: 1;
-        border-top: 1px solid fade(@muted-color, 35%);
+        border-top: 1px solid var(--muted-color);
+        opacity: 0.35;
     }
 }

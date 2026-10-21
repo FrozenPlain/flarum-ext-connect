@@ -8,5 +8,5 @@ namespace FrozenPlain\Connect\Access;
  */
 class ApiKeyRequest
 {
-    public $active = false;
+    public bool $active = false;
 }

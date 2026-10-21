@@ -1,7 +1,7 @@
 import app from 'flarum/admin/app';
 
 app.initializers.add('frozenplain-connect', () => {
-    app.extensionData
+    app.registry
         .for('frozenplain-connect')
         .registerSetting({
             setting: 'frozenplain-connect.siteUrl',

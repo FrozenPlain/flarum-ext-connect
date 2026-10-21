@@ -1,17 +1,17 @@
 <?php
 
-use Flarum\Api\Serializer\ForumSerializer;
-use Flarum\Api\Serializer\UserSerializer;
+use Flarum\Api\Resource\ForumResource;
+use Flarum\Api\Resource\UserResource;
 use Flarum\Discussion\Discussion;
 use Flarum\Extend;
 use Flarum\Http\Middleware\AuthenticateWithHeader;
 use Flarum\Http\Middleware\AuthenticateWithSession;
 use Flarum\Tags\Tag;
-use Flarum\User\Event\Saving;
 use FrozenPlain\Connect\Access\AccessServiceProvider;
 use FrozenPlain\Connect\Access\ReviewDiscussionPolicy;
 use FrozenPlain\Connect\Access\ReviewsTagPolicy;
-use FrozenPlain\Connect\Listener\SaveConnected;
+use FrozenPlain\Connect\Api\ConnectedField;
+use FrozenPlain\Connect\Api\SessionField;
 use FrozenPlain\Connect\Middleware\AuthenticateWithFrozenPlain;
 use FrozenPlain\Connect\Middleware\MarkApiKeyRequest;
 
@@ -30,21 +30,12 @@ return [
         ->serializeToForum('frozenplainSiteUrl', 'frozenplain-connect.siteUrl'),
 
     // frozenplain.com connects and disconnects accounts through the API, as an admin
-    (new Extend\Event())
-        ->listen(Saving::class, SaveConnected::class),
-
-    (new Extend\ApiSerializer(UserSerializer::class))
-        ->attributes(function (UserSerializer $serializer, $user) {
-            return $serializer->getActor()->isAdmin()
-                ? ['frozenplainConnected' => $user->frozenplain_connected_at !== null]
-                : [];
-        }),
+    (new Extend\ApiResource(UserResource::class))
+        ->fields(ConnectedField::class),
 
     // Lets the forum JS swap the log-out button for frozenplain.com's sign-out
-    (new Extend\ApiSerializer(ForumSerializer::class))
-        ->attributes(function (ForumSerializer $serializer) {
-            return ['frozenplainSession' => (bool) $serializer->getRequest()->getAttribute('frozenplainSession')];
-        }),
+    (new Extend\ApiResource(ForumResource::class))
+        ->fields(SessionField::class),
 
     (new Extend\Middleware('forum'))
         ->insertAfter(AuthenticateWithSession::class, AuthenticateWithFrozenPlain::class),

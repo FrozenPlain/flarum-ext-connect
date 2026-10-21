@@ -15,18 +15,15 @@ class ReviewsTagPolicy extends AbstractPolicy
 {
     const REVIEWS_TAG_SLUG = 'reviews';
 
-    protected $apiKeyRequest;
-
-    public function __construct(ApiKeyRequest $apiKeyRequest)
+    public function __construct(protected ApiKeyRequest $apiKeyRequest)
     {
-        $this->apiKeyRequest = $apiKeyRequest;
     }
 
     // Also covers adding the tag to an existing discussion: addToDiscussion asks startDiscussion
-    public function startDiscussion(User $actor, Tag $tag)
+    public function startDiscussion(User $actor, Tag $tag): ?string
     {
         if ($tag->slug !== self::REVIEWS_TAG_SLUG || $actor->isAdmin()) {
-            return;
+            return null;
         }
 
         return $this->apiKeyRequest->active ? $this->forceAllow() : $this->forceDeny();
